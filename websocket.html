@@ -13,7 +13,7 @@
         $('#'+id).append('<div class="tweet">'+tweet+'</div>');
       };
       
-      socket = new WebSocket('ws://0.0.0.0:8080/');
+      var socket = new WebSocket("ws://127.0.0.1:4000/");
 
       socket.onopen = function() {
         console.log("Socket opened");
@@ -21,18 +21,13 @@
 
       socket.onmessage = function(message) {
         var info = JSON.parse(message.data);
-        console.log(info.lang, info.tweet);
-        addTweetToPage(info.lang, info.tweet);
+        console.log(info.tweet);
+        addTweetToPage(info.tweet);
       };
 
       // Log errors
       socket.onerror = function (error) {
         console.log('WebSocket Error ' + error);
-      };
-
-      // Log messages from the server
-      socket.onmessage = function (e) {
-        console.log('Server: ' + e.data);
       };
 
       socket.onclose = function() {
