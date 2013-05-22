@@ -3,14 +3,19 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
+
+      tweet_count = 0;
+
       var container = $('.container');
       
       var addTweetToPage = function(tweet) {
+        tweet_count++
         var id = 'tweets';
         if ($('#'+id).length == 0) {
           container.append('<div id="'+id+'"></div>')
         }
-        $('#'+id).append('<div class="tweet">'+tweet+'</div>');
+        $('#'+id).prepend('<p class="tweet">'+tweet+'</p>');
+        $('#tweet_count').html(tweet_count + ' tweets and counting...');
       };
       
       var socket = new WebSocket("ws://127.0.0.1:4000/");
@@ -35,8 +40,11 @@
       };
     })
   </script>
+  <title>One Direction -- The LIVE Stream</title>
 </head>
 
 <body>
+  <h1>One Direction -- LIVE TWEETS</h1>
+  <h2 id="tweet_count"></h2>
   <div class="container"></div>
 </body>
