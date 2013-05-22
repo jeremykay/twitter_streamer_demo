@@ -6,7 +6,7 @@ require 'em-websocket'
 require 'twitter_stream'
 require 'auth_keys'
 
-TWITTER_TERM = 'bieber'
+TWITTER_TERM = 'doors'
 
 EM.run {
   websocket_connections = []
@@ -20,12 +20,21 @@ EM.run {
       puts "Websocket connection closed"
       websocket_connections.delete(ws)
     }
+    ws.onerror { |error|
+      puts error
+    }
+    ws.onmessage { |msg|
+      puts "Recieved message: #{msg}"
+      # ws.send "Pong: #{msg}"
+    }
   end
   
   stream = TwitterStream.new(TWITTER_USERNAME, TWITTER_PASSWORD, TWITTER_TERM)
   stream.ontweet { |tweet|
     puts tweet
+    p websocket_connections.inspect
     websocket_connections.each do |socket|
+      puts "socket: "
       socket.send(JSON.generate({
         :tweet => tweet
       }))

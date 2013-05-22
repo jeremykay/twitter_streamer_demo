@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>index</title>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script>
+      var ws;
+
+      $(document).ready(function()
+      {
+        if (!("WebSocket" in window))
+        {
+          alert("Sorry, WebSockets unavailable.");
+          return;
+        }
+
+        ws = new WebSocket("ws://127.0.0.1:4000/");
+
+        ws.onopen = function() {
+            console.log("connected...");
+            ws.send("hello server");
+            ws.send("hello again");
+        };
+        ws.onmessage = function(evt)
+        {
+            console.log(evt);
+            $('#echo').append(evt.data +"<br>");
+        };
+
+        ws.onclose = function()
+        {
+          console.log("socket closed");
+        };
+    });
+    </script>
+</head>
+    <body>
+        meh
+        <div id="echo"></div>
+    </body>
+</html>
